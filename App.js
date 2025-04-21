@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import SetWallpaper from 'react-native-set-wallpaper';
+import { Alert, Button, Platform } from 'react-native';
+
 import {
   View,
   FlatList,
@@ -66,6 +69,26 @@ const App = () => {
             <View style={styles.modalContainer}>
               <Pressable style={styles.closeArea} onPress={() => setIsModalVisible(false)} />
               <Image source={{ uri: selectedImage }} style={styles.fullImage} resizeMode="contain" />
+              {Platform.OS === 'android' && (
+  <View style={{ marginTop: 20 }}>
+    <Button
+      title="Set as Wallpaper"
+      onPress={() => {
+        SetWallpaper.setWallpaper(
+          { uri: selectedImage },
+          (res) => {
+            Alert.alert('Success', 'Wallpaper set successfully!');
+          },
+          (err) => {
+            console.error(err);
+            Alert.alert('Error', 'Failed to set wallpaper.');
+          }
+        );
+      }}
+    />
+  </View>
+)}
+
             </View>
           </Modal>
         </>
